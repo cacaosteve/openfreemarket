@@ -6,11 +6,8 @@
   p 
     | #{t('.text')}
   ul
-    - if user_signed_in?
+      li = link_to "Code", "https://github.com/cacaosteve/openfreemarket"
       li = link_to "#{t('.text1')}"
       li = link_to "#{t('.text2')}"
       li = link_to "#{t('.text3')}"
       li = link_to "#{t('.text4')}"
-    - else
-      li
-        = link_to "Code", "https://github.com/cacaosteve/openfreemarket"
