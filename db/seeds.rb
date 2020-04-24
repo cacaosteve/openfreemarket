@@ -48,41 +48,41 @@ Category.create([
 User.destroy_all
 ActiveRecord::Base.connection.reset_pk_sequence!('users')
 
-support = User.create({email: "example@example.com", password: "123456789", role: "Support", location: "Indonesia", pin: "987654321", currency: "Bitcoin", username: "Support", locale: "en", fe_policy: nil, description: nil, fee: nil, public_url: nil, fa_pgp: nil, withdraw_password: nil})
+support = User.create({email: "example@example.com", password: "123456789", role: "Support", location: "Indonesia", pin: "987654321", currency: "Bitcoin", username: "Support", locale: "en", fe_policy: nil, description: nil, fee: nil, public_url: nil, fa_pgp: nil})
 
-helmi_vendor = User.create({email: "example@example.com", password: "123456789", role: "Vendor", location: "Indonesia", pin: "987654321", currency: "Bitcoin", username: "helmiakbar", locale: "en", fe_policy: nil, description: nil, fee: nil, public_url: nil, fa_pgp: nil, withdraw_password: nil})
+helmi_vendor = User.create({email: "example@example.com", password: "123456789", role: "Vendor", location: "Indonesia", pin: "987654321", currency: "Bitcoin", username: "helmiakbar", locale: "en", fe_policy: nil, description: nil, fee: nil, public_url: nil, fa_pgp: nil})
 
-steve_vendor = User.create({email: "example@example.com", password: "dkEo43A34u#@", role: "Vendor", location: "United States of America", pin: "3ireAo3jsAi", currency: "IDR", username: "vendor222", locale: "en", fe_policy: "No - I will never ask for FE", description: "vendor description test test testing\r\n\r\nLorem Ipsu...", fee: 1.0, public_url: "", fa_pgp: false, withdraw_password: nil})
+steve_vendor = User.create({email: "example@example.com", password: "dkEo43A34u#@", role: "Vendor", location: "United States of America", pin: "3ireAo3jsAi", currency: "IDR", username: "vendor222", locale: "en", fe_policy: "No - I will never ask for FE", description: "vendor description test test testing\r\n\r\nLorem Ipsu...", fee: 1.0, public_url: "", fa_pgp: false})
 
-steve_buyer = User.create({email: "example@example.com", password: "Ad3kCowej23", role: "Buyer", location: "United States of America", pin: "f3i39vAjd29", currency: "United States Dollar", username: "customer222", locale: "en", fe_policy: nil, description: nil, fee: nil, public_url: nil, fa_pgp: nil, withdraw_password: nil})
+steve_buyer = User.create({email: "example@example.com", password: "Ad3kCowej23", role: "Buyer", location: "United States of America", pin: "f3i39vAjd29", currency: "United States Dollar", username: "customer222", locale: "en", fe_policy: nil, description: nil, fee: nil, public_url: nil, fa_pgp: nil})
 
-helmi_buyer = User.create({email: "example@example.com", password: "123456789", role: "Buyer", location: "United States of America", pin: "987654321", currency: "United States Dollar", username: "custome222", locale: "en", fe_policy: nil, description: nil, fee: nil, public_url: nil, fa_pgp: nil, withdraw_password: nil})
+helmi_buyer = User.create({email: "example@example.com", password: "123456789", role: "Buyer", location: "United States of America", pin: "987654321", currency: "United States Dollar", username: "custome222", locale: "en", fe_policy: nil, description: nil, fee: nil, public_url: nil, fa_pgp: nil})
 
-vendor_test_1 = User.create({email: "example@example.com", password: "password", role: "Vendor", location: "101", pin: "987654321", currency: "IDR", username: "vendor_test_1", locale: "id", fe_policy: "No - I will never ask for FE", description: "description", fee: nil, public_url: "", fa_pgp: nil, withdraw_password: 123456789})
+vendor_test_1 = User.create({email: "example@example.com", password: "password", role: "Vendor", location: "101", pin: "987654321", currency: "IDR", username: "vendor_test_1", locale: "id", fe_policy: "No - I will never ask for FE", description: "description", fee: nil, public_url: "", fa_pgp: nil})
 
-vendor_test_2 = User.create({email: "example@example.com", password: "password", role: "Vendor", location: "101", pin: "987654321", currency: "IDR", username: "vendor_test_2", locale: "id", fe_policy: "Partial - I need partial FE to ship orders", description: "description", fee: nil, public_url: "", fa_pgp: nil, withdraw_password: 123456789})
+vendor_test_2 = User.create({email: "example@example.com", password: "password", role: "Vendor", location: "101", pin: "987654321", currency: "IDR", username: "vendor_test_2", locale: "id", fe_policy: "Partial - I need partial FE to ship orders", description: "description", fee: nil, public_url: "", fa_pgp: nil})
 
-vendor_test_3 = User.create({email: "example@example.com", password: "password", role: "Vendor", location: "101", pin: "987654321", currency: "IDR", username: "vendor_test_3", locale: "id", fe_policy: "No - Not for smaller purchases - check product description", description: "description", fee: nil, public_url: "", fa_pgp: nil, withdraw_password: 123456789})
+vendor_test_3 = User.create({email: "example@example.com", password: "password", role: "Vendor", location: "101", pin: "987654321", currency: "IDR", username: "vendor_test_3", locale: "id", fe_policy: "No - Not for smaller purchases - check product description", description: "description", fee: nil, public_url: "", fa_pgp: nil})
 
-vendor_test_4 = User.create({email: "example@example.com", password: "password", role: "Vendor", location: "101", pin: "987654321", currency: "IDR", username: "vendor_test_4", locale: "id", fe_policy: "No - I will never ask for FE", description: "description", fee: nil, public_url: "", fa_pgp: nil, withdraw_password: 123456789})
+vendor_test_4 = User.create({email: "example@example.com", password: "password", role: "Vendor", location: "101", pin: "987654321", currency: "IDR", username: "vendor_test_4", locale: "id", fe_policy: "No - I will never ask for FE", description: "description", fee: nil, public_url: "", fa_pgp: nil})
 
-vendor_test_5 = User.create({email: "example@example.com", password: "password", role: "Vendor", location: "101", pin: "987654321", currency: "IDR", username: "vendor_test_5", locale: "id", fe_policy: "Partial - I need partial FE to ship orders", description: "description", fee: nil, public_url: "", fa_pgp: nil, withdraw_password: 123456789})
+vendor_test_5 = User.create({email: "example@example.com", password: "password", role: "Vendor", location: "101", pin: "987654321", currency: "IDR", username: "vendor_test_5", locale: "id", fe_policy: "Partial - I need partial FE to ship orders", description: "description", fee: nil, public_url: "", fa_pgp: nil})
 
-vendor_test_6 = User.create({email: "example@example.com", password: "password", role: "Vendor", location: "101", pin: "987654321", currency: "IDR", username: "vendor_test_6", locale: "id", fe_policy: "No - Not for smaller purchases - check product description", description: "description", fee: nil, public_url: "", fa_pgp: nil, withdraw_password: 123456789})
+vendor_test_6 = User.create({email: "example@example.com", password: "password", role: "Vendor", location: "101", pin: "987654321", currency: "IDR", username: "vendor_test_6", locale: "id", fe_policy: "No - Not for smaller purchases - check product description", description: "description", fee: nil, public_url: "", fa_pgp: nil})
 
-buyer_test_1 = User.create({email: "example@example.com", password: "password", role: "Buyer", location: "101", pin: "987654321", currency: "IDR", created_at: "2014-10-07 06:54:39", updated_at: "2014-10-15 07:04:47", username: "buyer_test_1", locale: "en", fe_policy: nil, description: nil, fee: nil, public_url: nil, fa_pgp: nil, withdraw_password: "123456789"})
+buyer_test_1 = User.create({email: "example@example.com", password: "password", role: "Buyer", location: "101", pin: "987654321", currency: "IDR", created_at: "2014-10-07 06:54:39", updated_at: "2014-10-15 07:04:47", username: "buyer_test_1", locale: "en", fe_policy: nil, description: nil, fee: nil, public_url: nil, fa_pgp: nil})
 
-buyer_test_2 = User.create({email: "example@example.com", password: "password", role: "Buyer", location: "101", pin: "987654321", currency: "IDR", created_at: "2014-10-07 06:54:39", updated_at: "2014-10-15 07:04:47", username: "buyer_test_2", locale: "en", fe_policy: nil, description: nil, fee: nil, public_url: nil, fa_pgp: nil, withdraw_password: "123456789"})
+buyer_test_2 = User.create({email: "example@example.com", password: "password", role: "Buyer", location: "101", pin: "987654321", currency: "IDR", created_at: "2014-10-07 06:54:39", updated_at: "2014-10-15 07:04:47", username: "buyer_test_2", locale: "en", fe_policy: nil, description: nil, fee: nil, public_url: nil, fa_pgp: nil})
 
-buyer_test_3 = User.create({email: "example@example.com", password: "password", role: "Buyer", location: "101", pin: "987654321", currency: "IDR", created_at: "2014-10-07 06:54:39", updated_at: "2014-10-15 07:04:47", username: "buyer_test_3", locale: "en", fe_policy: nil, description: nil, fee: nil, public_url: nil, fa_pgp: nil, withdraw_password: "123456789"})
+buyer_test_3 = User.create({email: "example@example.com", password: "password", role: "Buyer", location: "101", pin: "987654321", currency: "IDR", created_at: "2014-10-07 06:54:39", updated_at: "2014-10-15 07:04:47", username: "buyer_test_3", locale: "en", fe_policy: nil, description: nil, fee: nil, public_url: nil, fa_pgp: nil})
 
-buyer_test_4 = User.create({email: "example@example.com", password: "password", role: "Buyer", location: "101", pin: "987654321", currency: "IDR", created_at: "2014-10-07 06:54:39", updated_at: "2014-10-15 07:04:47", username: "buyer_test_4", locale: "en", fe_policy: nil, description: nil, fee: nil, public_url: nil, fa_pgp: nil, withdraw_password: "123456789"})
+buyer_test_4 = User.create({email: "example@example.com", password: "password", role: "Buyer", location: "101", pin: "987654321", currency: "IDR", created_at: "2014-10-07 06:54:39", updated_at: "2014-10-15 07:04:47", username: "buyer_test_4", locale: "en", fe_policy: nil, description: nil, fee: nil, public_url: nil, fa_pgp: nil})
 
-buyer_test_5 = User.create({email: "example@example.com", password: "password", role: "Buyer", location: "101", pin: "987654321", currency: "IDR", created_at: "2014-10-07 06:54:39", updated_at: "2014-10-15 07:04:47", username: "buyer_test_5", locale: "en", fe_policy: nil, description: nil, fee: nil, public_url: nil, fa_pgp: nil, withdraw_password: "123456789"})
+buyer_test_5 = User.create({email: "example@example.com", password: "password", role: "Buyer", location: "101", pin: "987654321", currency: "IDR", created_at: "2014-10-07 06:54:39", updated_at: "2014-10-15 07:04:47", username: "buyer_test_5", locale: "en", fe_policy: nil, description: nil, fee: nil, public_url: nil, fa_pgp: nil})
 
-buyer_test_6 = User.create({email: "example@example.com", password: "password", role: "Buyer", location: "101", pin: "987654321", currency: "IDR", created_at: "2014-10-07 06:54:39", updated_at: "2014-10-15 07:04:47", username: "buyer_test_6", locale: "en", fe_policy: nil, description: nil, fee: nil, public_url: nil, fa_pgp: nil, withdraw_password: "123456789"})
+buyer_test_6 = User.create({email: "example@example.com", password: "password", role: "Buyer", location: "101", pin: "987654321", currency: "IDR", created_at: "2014-10-07 06:54:39", updated_at: "2014-10-15 07:04:47", username: "buyer_test_6", locale: "en", fe_policy: nil, description: nil, fee: nil, public_url: nil, fa_pgp: nil})
 
-buyer_test_7 = User.create({email: "example@example.com", password: "password", role: "Buyer", location: "101", pin: "987654321", currency: "IDR", created_at: "2014-10-07 06:54:39", updated_at: "2014-10-15 07:04:47", username: "buyer_test_7", locale: "en", fe_policy: nil, description: nil, fee: nil, public_url: nil, fa_pgp: nil, withdraw_password: "123456789"})
+buyer_test_7 = User.create({email: "example@example.com", password: "password", role: "Buyer", location: "101", pin: "987654321", currency: "IDR", created_at: "2014-10-07 06:54:39", updated_at: "2014-10-15 07:04:47", username: "buyer_test_7", locale: "en", fe_policy: nil, description: nil, fee: nil, public_url: nil, fa_pgp: nil})
 
 ShippingOption.destroy_all
 ActiveRecord::Base.connection.reset_pk_sequence!('shipping_options')
@@ -130,9 +130,9 @@ Item.create([
 ])
 
 OptionLink.create(link: "Support", disabled: false)
-Languange.create([{name: "EN", status: false}, {name: "ID", status: false}])
+Language.create([{name: "EN", status: false}, {name: "ID", status: false}])
 BitcoinCurrency.destroy_all
-currencies = JSON.load(open("https://bitpay.com/api/rates"))
+currencies = JSON.load(URI.open("https://bitpay.com/api/rates"))
 BitcoinCurrency.create(currencies)
 
 

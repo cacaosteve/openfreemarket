@@ -9,8 +9,8 @@ class ApplicationController < ActionController::Base
   before_action :check_invite_user
   before_action :get_user_wallet
   before_action :check_payment_method
-  # before_action :check_en_languange
-  # before_action :check_id_languange
+  # before_action :check_en_language
+  # before_action :check_id_language
   before_action :check_cart
   before_action :check_last_order_status
   before_action :check_order
@@ -35,12 +35,12 @@ class ApplicationController < ActionController::Base
       end
     end
 
-    def check_en_languange
-      @check_en_languange = Language.where(name: "EN").first.status
+    def check_en_language
+      @check_en_language = Language.where(name: "EN").first.status
     end
 
-    def check_id_languange
-      @check_id_languange = Language.where(name: "ID").first.status
+    def check_id_language
+      @check_id_language = Language.where(name: "ID").first.status
     end
 
     def check_cart

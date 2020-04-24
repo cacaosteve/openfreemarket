@@ -20,7 +20,7 @@ class CreateMailboxer < ActiveRecord::Migration[5.0]
       t.column :updated_at, :datetime, :null => false
     end    
   	#Notifications and Messages
-    create_table :mailboxer_notifications do |t|
+    create_table :mbntfcn do |t|
       t.column :type, :string
       t.column :body, :text
       t.column :subject, :string, :default => ""
@@ -43,24 +43,24 @@ class CreateMailboxer < ActiveRecord::Migration[5.0]
   	add_index "mailboxer_receipts","notification_id"
 
   	#Messages  
-  	add_index "mailboxer_notifications","conversation_id"
+  	add_index "mbntfcn","conversation_id"
   
   #Foreign keys    
   	#Conversations
   	#Receipts
-  	add_foreign_key "mailboxer_receipts", "mailboxer_notifications", :name => "receipts_on_notification_id", :column => "notification_id"
+  	add_foreign_key "mailboxer_receipts", "mbntfcn", :name => "receipts_on_notification_id", :column => "notification_id"
   	#Messages  
-  	add_foreign_key "mailboxer_notifications", "mailboxer_conversations", :name => "notifications_on_conversation_id", :column => "conversation_id"
+  	add_foreign_key "mbntfcn", "mailboxer_conversations", :name => "notifications_on_conversation_id", :column => "conversation_id"
   end
   
   def self.down
   #Tables  	
   	remove_foreign_key "mailboxer_receipts", :name => "receipts_on_notification_id"
-  	remove_foreign_key "mailboxer_notifications", :name => "notifications_on_conversation_id"
+  	remove_foreign_key "mbntfcn", :name => "notifications_on_conversation_id"
   	
   #Indexes
     drop_table :mailboxer_receipts
     drop_table :mailboxer_conversations
-    drop_table :mailboxer_notifications
+    drop_table :mbntfcn
   end
 end
