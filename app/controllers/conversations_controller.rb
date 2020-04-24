@@ -1,7 +1,7 @@
 require 'gpgme'
 
 class ConversationsController < ApplicationController
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
   before_action :category
   before_action :mailbox
   helper_method :mailbox, :conversation

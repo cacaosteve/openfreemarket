@@ -1,5 +1,5 @@
 class Api::V1::ShippingOptionsController < ApiController
-  skip_before_filter :verify_authenticity_token
+  skip_before_action :verify_authenticity_token
 
    def_param_group :update_shipping_option_param do
     param :update_shipping_option_param, Hash, desc: "Nested parameters of update shipping_options. Don't use this params." do

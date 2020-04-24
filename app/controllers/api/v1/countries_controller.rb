@@ -1,5 +1,5 @@
 class Api::V1::CountriesController < ApiController
-  skip_before_filter :authenticate_user_from_token!
+  skip_before_action :authenticate_user_from_token!
 
   api :GET, '/v1/countries', 'Show all list country'
   def index

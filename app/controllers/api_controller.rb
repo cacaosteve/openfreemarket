@@ -1,10 +1,10 @@
 class ApiController < ApplicationController
-  before_filter :authenticate_user_from_token!
-  before_filter :category
-  before_filter :market_name
-  before_filter :get_BCH_rates
-  before_filter :cors_preflight_check
-  after_filter :cors_set_access_control_headers
+  before_action :authenticate_user_from_token!
+  before_action :category
+  before_action :market_name
+  before_action :get_BCH_rates
+  before_action :cors_preflight_check
+  after_action :cors_set_access_control_headers
  
   def cors_set_access_control_headers
     headers['Access-Control-Allow-Origin'] = '*'

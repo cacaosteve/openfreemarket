@@ -1,12 +1,12 @@
 class ShoppingCartsController < ApplicationController
   before_action :authenticate_user!
-  before_filter :extract_shopping_cart
+  before_action :extract_shopping_cart
   before_action :category
   # before_action :check_buyer_balance, only: [:create]
   # before_action :get_new_price, only: [:encrypt_shipping_information]
   before_action :get_price_from_chart, only: [:pay_page]
   # before_action :validate_in_update_cart, only: [:encrypt_shipping_information, :pay_page]
-  before_filter :configuration_multisig
+  before_action :configuration_multisig
 
   def create
     bitcoin_balance = `bitcoin-cli getbalance #{current_user.username}`.to_f.round(6)

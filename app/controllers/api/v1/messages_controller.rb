@@ -1,5 +1,5 @@
 class Api::V1::MessagesController < ApiController
-  skip_before_filter :verify_authenticity_token
+  skip_before_action :verify_authenticity_token
 
   api :GET, '/v1/messages', 'Show all messages of user'
   param :auth_token, String, desc: "Authentication Token User", required: true

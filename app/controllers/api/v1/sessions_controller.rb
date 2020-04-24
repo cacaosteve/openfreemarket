@@ -1,8 +1,8 @@
 class Api::V1::SessionsController < Devise::SessionsController  
-  #prepend_before_filter :require_no_authentication, :only => [:create ]
+  #prepend_before_action :require_no_authentication, :only => [:create ]
   #include Devise::Controllers::InternalHelpers
-  #before_filter :ensure_params_exist, only: :create
-  skip_before_filter :verify_authenticity_token
+  #before_action :ensure_params_exist, only: :create
+  skip_before_action :verify_authenticity_token
 
   respond_to :json
 

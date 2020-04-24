@@ -1,6 +1,6 @@
 class PrivateMessagesController < InheritedResources::Base
   skip_before_action :market_name, only: [:reply]
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
   before_action :category
   before_action :fetch_conversation_user, only: [:read_conversation, :unread_conversation, :trash]
   before_action :fetch_private_message, only: [:trash_private_message, :untrash_private_message, :unread_private_message, :read_private_message]

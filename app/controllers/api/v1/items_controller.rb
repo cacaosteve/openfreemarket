@@ -1,5 +1,5 @@
 class Api::V1::ItemsController < ApiController
-  skip_before_filter :verify_authenticity_token
+  skip_before_action :verify_authenticity_token
 
   def_param_group :item_param do
     param :item_param, Hash, desc: "Nested parameters of item. Don't use this params." do

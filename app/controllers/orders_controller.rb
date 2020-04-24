@@ -7,9 +7,9 @@ require 'blockchain'
 class OrdersController < InheritedResources::Base
   before_action :authenticate_user!
   before_action :category
-  before_filter :configuration_multisig
+  before_action :configuration_multisig
   before_action :get_user_wallet
-  before_filter :get_bitcoin_balance, only: [:pay_order_in_order, :create, :account, :member, :transfer_fund]
+  before_action :get_bitcoin_balance, only: [:pay_order_in_order, :create, :account, :member, :transfer_fund]
 
   def validate_wallet; end
 

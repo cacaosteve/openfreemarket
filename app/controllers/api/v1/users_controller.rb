@@ -1,6 +1,6 @@
 class Api::V1::UsersController < ApiController
-  skip_before_filter :authenticate_user_from_token!, only: :create
-  skip_before_filter :verify_authenticity_token
+  skip_before_action :authenticate_user_from_token!, only: :create
+  skip_before_action :verify_authenticity_token
 
   def_param_group :user_update do
     param :user_update, Hash, desc: "Nested parameters of update user. Don't use this params." do
