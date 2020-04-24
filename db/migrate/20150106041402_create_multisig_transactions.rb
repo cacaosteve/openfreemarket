@@ -1,4 +1,4 @@
-class CreateMultisigTransactions < ActiveRecord::Migration
+class CreateMultisigTransactions < ActiveRecord::Migration[5.0]
   def change
     create_table :multisig_transactions do |t|
       t.text :address

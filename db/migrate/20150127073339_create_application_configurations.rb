@@ -1,4 +1,4 @@
-class CreateApplicationConfigurations < ActiveRecord::Migration
+class CreateApplicationConfigurations < ActiveRecord::Migration[5.0]
   def change
     create_table :application_configurations do |t|
       t.string :name

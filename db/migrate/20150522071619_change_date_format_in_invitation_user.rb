@@ -1,4 +1,4 @@
-class ChangeDateFormatInInvitationUser < ActiveRecord::Migration
+class ChangeDateFormatInInvitationUser < ActiveRecord::Migration[5.0]
   def up
     change_column :invitation_users, :invitation_accepted_at, :datetime
   end

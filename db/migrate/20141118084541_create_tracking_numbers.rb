@@ -1,4 +1,4 @@
-class CreateTrackingNumbers < ActiveRecord::Migration
+class CreateTrackingNumbers < ActiveRecord::Migration[5.0]
   def change
     create_table :tracking_numbers do |t|
       t.integer :sender_id

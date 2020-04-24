@@ -1,4 +1,4 @@
-class RenameLanguangesTable < ActiveRecord::Migration
+class RenameLanguangesTable < ActiveRecord::Migration[5.0]
   def self.up
     rename_table :languanges, :languages
   end

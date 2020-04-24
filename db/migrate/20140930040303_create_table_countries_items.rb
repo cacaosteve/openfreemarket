@@ -1,4 +1,4 @@
-class CreateTableCountriesItems < ActiveRecord::Migration
+class CreateTableCountriesItems < ActiveRecord::Migration[5.0]
   def change
     create_table :countries_items, id: false do |t|
       t.integer :country_id

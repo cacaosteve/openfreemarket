@@ -1,4 +1,4 @@
-class AddFePolicyToUser < ActiveRecord::Migration
+class AddFePolicyToUser < ActiveRecord::Migration[5.0]
   def change
     add_column :users, :fe_policy, :string
     add_column :users, :description, :text

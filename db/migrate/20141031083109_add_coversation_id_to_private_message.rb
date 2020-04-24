@@ -1,4 +1,4 @@
-class AddCoversationIdToPrivateMessage < ActiveRecord::Migration
+class AddCoversationIdToPrivateMessage < ActiveRecord::Migration[5.0]
   def change
     add_column :private_messages, :conversation_id, :integer
   end

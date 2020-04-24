@@ -1,4 +1,4 @@
-class AddTableItemsShippingOptions < ActiveRecord::Migration
+class AddTableItemsShippingOptions < ActiveRecord::Migration[5.0]
   def change
   	create_table :items_shipping_options, id: false do |t|
       t.integer :item_id

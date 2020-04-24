@@ -1,4 +1,4 @@
-class AddTableCategoriesItems < ActiveRecord::Migration
+class AddTableCategoriesItems < ActiveRecord::Migration[5.0]
   def change
     create_table :categories_items, id: false do |t|
       t.integer :category_id

@@ -1,4 +1,4 @@
-class CreateShippingOptions < ActiveRecord::Migration
+class CreateShippingOptions < ActiveRecord::Migration[5.0]
   def change
     create_table :shipping_options do |t|
       t.string :name

@@ -1,4 +1,4 @@
-class AddShoppingCartIdToMultisigTransaction < ActiveRecord::Migration
+class AddShoppingCartIdToMultisigTransaction < ActiveRecord::Migration[5.0]
   def change
     add_column :multisig_transactions, :shopping_cart_id, :integer
     add_column :multisig_transactions, :order_id, :integer

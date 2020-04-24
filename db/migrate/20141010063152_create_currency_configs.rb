@@ -1,4 +1,4 @@
-class CreateCurrencyConfigs < ActiveRecord::Migration
+class CreateCurrencyConfigs < ActiveRecord::Migration[5.0]
   def change
     create_table :currency_configs do |t|
       t.string :name

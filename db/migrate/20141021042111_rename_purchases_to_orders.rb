@@ -1,4 +1,4 @@
-class RenamePurchasesToOrders < ActiveRecord::Migration
+class RenamePurchasesToOrders < ActiveRecord::Migration[5.0]
   def change
     rename_table :purchases, :orders
   end
