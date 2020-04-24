@@ -94,7 +94,7 @@ h4 Select a payment method:
   - if @multisig.status.eql?true
     .panel.panel-default
       .panel-heading
-        .panel-title Option 3. Pay using Bitcoin Multi-sig escrow
+        .panel-title Option 3. Pay using Bitcoin Cash Multi-sig escrow
       .panel-body
         div style="font-size: 12px;"
           = link_to "Pay Using Multisig", create_multi_sig_path(shopping_cart: @shopping_cart.id, vendor_name: @shopping_cart.shopping_cart_items.first.item.user.username), class: "btn btn-primary"
