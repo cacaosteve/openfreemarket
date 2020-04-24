@@ -112,9 +112,9 @@ class ApplicationController < ActionController::Base
     end
 
     def configure_permitted_parameters
-      devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:email, :password, :pin, :role, :location, :currency, :password_confirmation, :username, :string_indentifier) }
-      devise_parameter_sanitizer.for(:sign_in) { |u| u.permit(:email, :password, :username, :remember_me) }
-      devise_parameter_sanitizer.for(:account_update) { |u| u.permit(:email, :password, :pin, :role, :location, :currency, :password_confirmation, :username, :locale, 
+      devise_parameter_sanitizer.permit(:sign_up) { |u| u.permit(:email, :password, :pin, :role, :location, :currency, :password_confirmation, :username, :string_indentifier) }
+      devise_parameter_sanitizer.permit(:sign_in) { |u| u.permit(:email, :password, :username, :remember_me) }
+      devise_parameter_sanitizer.permit(:account_update) { |u| u.permit(:email, :password, :pin, :role, :location, :currency, :password_confirmation, :username, :locale, 
         :fe_policy, :description, :fee, :public_url, :fa_pgp, :phrase, :string_indentifier, :vacation_mode) }
     end
 
