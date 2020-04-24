@@ -7,7 +7,7 @@ group :development do
   gem "rubycritic", :require => false
 end
 
-gem 'rails', '>= 5.0.0'
+gem 'rails', '>= 6.0.0'
 gem 'pg','>= 1.0.0'
 gem 'bigdecimal', '>= 2.0.0'
 gem 'uglifier', '>= 4.0.0'
