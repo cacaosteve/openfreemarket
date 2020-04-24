@@ -1,3 +1,10 @@
+development:
+  adapter: postgresql
+  encoding: unicode
+  database: openfreemarket
+  pool: 5
+  username: postgres
+  password: password
 production:
   adapter: postgresql
   encoding: unicode
