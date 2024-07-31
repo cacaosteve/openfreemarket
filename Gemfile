@@ -16,7 +16,7 @@ gem 'therubyracer',  platforms: :ruby
 gem 'jbuilder', '>= 2.0'
 gem 'sdoc', '>= 0.4.0',          group: :doc
 gem 'devise', '4.7.1'
-gem 'devise_invitable','2.0.1'
+gem 'devise_invitable','2.0.9'
 gem 'slim-rails'
 gem "simple_form", ">= 5.0.2"
 gem 'activeadmin', '>= 2.1.0'
