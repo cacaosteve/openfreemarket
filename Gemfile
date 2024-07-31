@@ -7,17 +7,17 @@ group :development do
   gem "rubycritic", :require => false
 end
 
-gem 'rails', '>= 6.0.0'
+gem 'rails', '>= 7.1.3.4'
 gem 'pg','>= 1.0.0'
 gem 'bigdecimal', '>= 2.0.0'
 gem 'uglifier', '>= 4.0.0'
 gem 'coffee-rails', '>= 4.0.0'
-gem 'therubyracer',  platforms: :ruby
 gem 'jbuilder', '>= 2.0'
 gem 'sdoc', '>= 0.4.0',          group: :doc
-gem 'devise', '4.7.1'
-gem 'devise_invitable','2.0.9'
+gem 'devise', '>= 4.8.1'
+gem 'devise_invitable','>= 2.0.9'
 gem 'slim-rails'
+gem 'sprockets-rails'
 gem "simple_form", ">= 5.0.2"
 gem 'activeadmin', '>= 2.1.0'
 gem 'bitcoin-ruby'
