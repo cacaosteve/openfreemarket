@@ -47,7 +47,7 @@ class PrivateMessage < ActiveRecord::Base
     end
 
     if params[:encrypted].present?
-      file = File.exists? ("public/pgp/users/#{receiver_id}/key.txt")
+      file = File.exist? ("public/pgp/users/#{receiver_id}/key.txt")
       if file.eql? true
         email = nil
         key = `gpg --import "public/pgp/users/#{receiver_id}/publickey.asc" 2>&1`
@@ -59,6 +59,6 @@ class PrivateMessage < ActiveRecord::Base
     end
 
     private_message = self.create({ sender_id:  current_user.id, receiver_id: receiver_id, body: params[:private_message][:body], conversation_id: conversation })
-    private_message.conversation.update_attributes(updated_at: Time.now)
+    private_message.conversation.update(updated_at: Time.current)
   end
 end

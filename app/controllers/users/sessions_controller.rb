@@ -52,7 +52,7 @@ class Users::SessionsController < Devise::SessionsController
       else
         user = User.find_by_username(params[:user][:username])
         if user.present?
-          file = File.exists? ("public/pgp/users/#{user.id}/key.txt")
+          file = File.exist? ("public/pgp/users/#{user.id}/key.txt")
           if file.eql? true
             redirect_to input_string_path(username: params[:user][:username])
           else

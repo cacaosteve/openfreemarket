@@ -83,13 +83,19 @@ class ApplicationController < ActionController::Base
       end
     end
 
-    def get_BCH_rates
-      bc_last_updates = BitcoinCurrency.last.updated_at if BitcoinCurrency.last
-      BitcoinCurrency.reset_currencies if bc_last_updates < 1.minute.ago || bc_last_updates.blank?
-      currencies = BitcoinCurrency.all.order("code ASC")
-      active_currencies = CurrencyConfig.get_currency_with_status_true
-      @rates = currencies.select{ |hash| active_currencies.include? hash['code'] }
+  def get_BCH_rates
+    # Check if there are any records in BitcoinCurrency
+    if BitcoinCurrency.exists?
+      bc_last_updates = BitcoinCurrency.last.updated_at
+      BitcoinCurrency.reset_currencies if bc_last_updates < 1.minute.ago
+    else
+      BitcoinCurrency.reset_currencies
     end
+
+    currencies = BitcoinCurrency.all.order("code ASC")
+    active_currencies = CurrencyConfig.get_currency_with_status_true
+    @rates = currencies.select { |hash| active_currencies.include? hash['code'] }
+  end
     
     def market_name
       @market_name = MarketName.first

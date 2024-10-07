@@ -2,7 +2,7 @@ Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
-  config.cache_classes = true
+  #config.cache_classes = true
 
   # Eager load code on boot. This eager loads most of Rails and
   # your application in memory, allowing both threaded web servers
@@ -13,6 +13,11 @@ Rails.application.configure do
   # Full error reports are disabled and caching is turned on.
   config.consider_all_requests_local       = false
   config.action_controller.perform_caching = true
+  
+  config.active_storage.service = :local 
+  
+  #config.assets.debug = true
+  #config.assets.raise_runtime_errors = true
 
   # Enable Rack::Cache to put a simple HTTP cache in front of your application
   # Add `rack-cache` to your Gemfile before enabling this.
@@ -23,11 +28,13 @@ Rails.application.configure do
   config.serve_static_files = false
 
   # Compress JavaScripts and CSS.
-  config.assets.js_compressor = :uglifier
-  # config.assets.css_compressor = :sass
+  #config.assets.js_compressor = :uglifier
+  #config.assets.js_compressor = Uglifier.new(harmony: true)
+  
+  config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
-  config.assets.compile = false
+  config.assets.compile = true
 
   # Generate digests for assets URLs.
   config.assets.digest = true
@@ -60,8 +67,8 @@ Rails.application.configure do
   # Precompile additional assets.
   # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
   config.assets.precompile += %w(*.svg *.eot *.woff *.ttf *.gif *.png *.ico)
-  config.assets.precompile << /\.(?:svg|eot|woff|ttf)\z/
-  config.assets.precompile << /\A(?!active_admin).*\.(js|css)\z/
+  #config.assets.precompile << /\.(?:svg|eot|woff|ttf)\z/
+  #config.assets.precompile << /\A(?!active_admin).*\.(js|css)\z/
   
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
@@ -85,4 +92,9 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
   config.action_mailer.perform_deliveries = true
   
+end
+
+
+Rails.application.config.after_initialize do
+  puts Rails.application.config.assets.paths
 end

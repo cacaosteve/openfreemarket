@@ -3,7 +3,7 @@ class CustomFailure < Devise::FailureApp
     if warden_options[:scope] == :user 
       user = User.find_by_username(params[:user][:username]) if params[:user].present?
       if user.present?
-        file = File.exists? ("public/pgp/users/#{user.id}/key.txt")
+        file = File.exist? ("public/pgp/users/#{user.id}/key.txt")
         if file.eql? true
           flash[:alert] = nil
           input_string_path(username: params[:user][:username])

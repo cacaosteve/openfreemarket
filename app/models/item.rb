@@ -36,104 +36,80 @@ class Item < ActiveRecord::Base
   end
 
   def self.get_filtered_items(params)
+    vendor_activity = nil  # Initialize the variable
     country_ids = []
     seventy_two_hours_ago = self.get_time
-    
-    if params[:limit].present?
-      limit = params[:limit]
-    else
-      limit = 20
-    end
-
-    if params[:hours].eql?"all"
-      vendor_activity = "all"
-    end
-
-    if params[:sort].eql?"quantity"
-      sort = "items.quantity desc"
-    elsif params[:sort].eql?"newest"
-      sort = "items.created_at desc"
-    elsif params[:sort].eql?"rating"
-      sort = "SUM(orders.rating) desc"
-    elsif params[:sort].eql?"total_order"
-      sort = "total_quantity desc"
-    else
-      sort = "items.id asc"
-    end
-
+    limit = params[:limit] || 20
+    sort = case params[:sort]
+           when "quantity" then "items.quantity desc"
+           when "newest" then "items.created_at desc"
+           when "rating" then "SUM(orders.rating) desc"
+           when "total_order" then "total_quantity desc"
+           else "items.id asc"
+           end
 
     items = self.joins(:user).where(is_deleted: false)
 
-    #country
     if params[:country].present? && !params[:country].zero?
       items = items.joins(:countries).where("countries_items.country_id IN (?)", params[:country])
     end
 
-    #ship_to
-    if params[:ship_to].present? || (params[:ship_to].present? && params[:ship_from].present?)
-      country_ids << params[:ship_to].to_i
+    if params[:ship_to].present? || params[:ship_from].present?
+      country_ids << params[:ship_to].to_i if params[:ship_to].present?
       country_ids << params[:ship_from].to_i if params[:ship_from].present?
       items = items.joins(:countries).where("countries_items.country_id IN (?)", country_ids)
-    elsif params[:ship_from].present?
-      # ship_from filter
-      items = items.joins(:country).where(ship_from: params[:ship_from]) 
     end
-    
-    # Activity filter
+
     if vendor_activity.present? || params[:ship_to].present? || params[:ship_from].present?
       items = items.where(is_hidden: false)
     else
       items = items.where("users.last_active >= ? AND users.vacation_mode IS FALSE AND items.is_hidden IS FALSE", seventy_two_hours_ago)
     end
 
-    # Rating filter
-    if params[:rating].present? || params[:sort].eql?("rating") || params[:sort].eql?("total_order")
-      if params[:rating].eql?("0") || params[:rating].nil?
-        items = items.joins("LEFT OUTER JOIN orders ON items.id = orders.item_id").select("coalesce(SUM(orders.quantity), 0) as total_quantity, items.*")
-      else
-        items = items.joins(:orders).select("SUM(orders.quantity) as total_quantity, items.*").having("SUM(orders.rating) >= ?", params[:rating])
-      end
+    if params[:rating].present? || %w[rating total_order].include?(params[:sort])
+      rating_condition = params[:rating].to_i.positive? ? "SUM(orders.rating) >= ?" : "1=1"
+      items = items.joins("LEFT OUTER JOIN orders ON items.id = orders.item_id")
+                   .select("coalesce(SUM(orders.quantity), 0) as total_quantity, items.*")
+                   .having(rating_condition, params[:rating].to_i)
     end
 
-    # Member filter
-    if params[:member].eql?"member"
+    if params[:member].eql?("member")
       items = items.where("users.member = ? AND items.is_hidden IS FALSE", "Confirmed")
     end
 
-    #keyword filter
     if params[:name].present?
       items = items.where("users.username ILIKE ? OR items.name ILIKE ?", "%#{params[:name]}%", "%#{params[:name]}%")
     end
 
-    # limit filter
-    items.order("#{sort}").group("items.id")
+    items = items.order(sort).group("items.id")
 
-    currencies = JSON.load(open("https://bitpay.com/api/rates"))
+    begin
+      currencies = JSON.parse(URI.open("https://bitpay.com/api/rates").read)
+    rescue OpenURI::HTTPError, JSON::ParserError => e
+      Rails.logger.error "Failed to fetch currency rates: #{e.message}"
+      currencies = []
+    end
+
     active_currencies = CurrencyConfig.where(status: true).map(&:name)
-    rates = {}
-    currencies.each do |currency|
-      if active_currencies.include? currency['code']
-        rates[currency['code'].downcase.to_sym] = currency['rate']
-      end
+    rates = currencies.each_with_object({}) do |currency, hash|
+      hash[currency['code'].downcase.to_sym] = currency['rate'] if active_currencies.include?(currency['code'])
     end
 
     items.each do |item|
-      if item.currency.present?
-        if active_currencies.include? item.currency.upcase
-          item.price_in_BCH = item.price / rates[item.currency.downcase.to_sym]
-        end
-      else
-        item.price_in_BCH = item.price
-      end
+      item.price_in_BCH = if item.currency.present? && rates[item.currency.downcase.to_sym]
+                            item.price / rates[item.currency.downcase.to_sym]
+                          else
+                            item.price
+                          end
     end
 
-    if params[:sort].eql?"lowest"
-      items = items.sort_by { |item| item.price_in_BCH } 
-    elsif params[:sort].eql?"highest"
-      items = items.sort_by { |item| item.price_in_BCH }.reverse
+    if params[:sort].eql?("lowest")
+      items = items.sort_by(&:price_in_BCH)
+    elsif params[:sort].eql?("highest")
+      items = items.sort_by(&:price_in_BCH).reverse
     end
 
-    items = Kaminari.paginate_array(items).page(params[:page]).per(limit)
+    Kaminari.paginate_array(items).page(params[:page]).per(limit)
   end
 
   def self.duplicate_item(params)

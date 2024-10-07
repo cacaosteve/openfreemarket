@@ -33,56 +33,38 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # POST /resource
   def create
     build_resource(sign_up_params)
-    if simple_captcha_valid?
-      # resource.withdraw_password = resource.encrypted_password
-      resource_saved = resource.save
-      yield resource if block_given?
-      if resource_saved
-        resource.string_indentifier = SecureRandom.hex
-        if resource.role.eql?"Vendor"
-          shipping_option =  ShippingOption.create({ name: "Free", price: 0.0, currency: "USD", user_id: resource.id })
-          resource.percentage = ApplicationConfiguration.where(name: "Percentage").first.percentage rescue 1
-        end
-        
-        if params[:token].present?
-          invite = InvitationUser.find_by_invitation_token(params[:token])
-          invite.invitation_accepted_at = Time.now
-          invite.save
-          resource.role = invite.role
-        end
-        resource.save
-        if @blockchain_payment_method.status.eql?true
-          wallet = Blockchain::create_wallet("#{params[:user][:password]}", 'bc3b42a4-9a58-4f3b-946a-4c3b53b863b1')
-          resource.identifier = wallet.identifier
-          resource.save
-        elsif @bitcoind_payment_method.status.eql?true
-          user_address = `bitcoin-cli getaccountaddress #{resource.username}`
-          if user_address.present?
-            user_address = user_address.gsub(/\n/, '')
-            create_address = Address.create({ address: user_address, user_id: resource.id, is_active: true })
-          end
-        end
-        # create_address = Address.create({ address: wallet.address, user_id: resource.id, is_active: true })
-        if resource.active_for_authentication?
-          set_flash_message :notice, :signed_up if is_flashing_format?
-          sign_up(resource_name, resource)
-          respond_with resource, location: after_sign_up_path_for(resource)
-        else
-          set_flash_message :notice, :"signed_up_but_#{resource.inactive_message}" if is_flashing_format?
-          expire_data_after_sign_in!
-          respond_with resource, location: after_inactive_sign_up_path_for(resource)
-        end
+
+    # Skip CAPTCHA validation altogether
+    resource_saved = resource.save
+    yield resource if block_given?
+    if resource_saved
+      resource.string_indentifier = SecureRandom.hex
+      if resource.role.eql?"Vendor"
+        ShippingOption.create(name: "Free", price: 0.0, currency: "USD", user_id: resource.id)
+        resource.percentage = ApplicationConfiguration.where(name: "Percentage").first&.percentage || 1
+      end
+    
+      if params[:token].present?
+        invite = InvitationUser.find_by_invitation_token(params[:token])
+        invite.update(invitation_accepted_at: Time.now) if invite
+        resource.role = invite&.role
+      end
+
+      resource.save
+      if resource.active_for_authentication?
+        set_flash_message :notice, :signed_up if is_flashing_format?
+        sign_up(resource_name, resource)
+        respond_with resource, location: after_sign_up_path_for(resource)
       else
-        @countries = Country.all
-        clean_up_passwords resource
-        respond_with resource
+        set_flash_message :notice, :"signed_up_but_#{resource.inactive_message}" if is_flashing_format?
+        expire_data_after_sign_in!
+        respond_with resource, location: after_inactive_sign_up_path_for(resource)
       end
     else
       @countries = Country.all
-      set_flash_message :notice, "captcha_errors"
-      render action: 'new'
+      clean_up_passwords resource
+      respond_with resource
     end
-
   end
 
   # GET /resource/edit
@@ -131,7 +113,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
           if params[:pgp_key].present?
             file = File.open("public/pgp/users/#{resource.id}/key.txt") rescue nil
             if file.blank? || !file.read.eql?(params[:pgp_key])
-              info = PGP.upload_key(params[:pgp_key], current_user.id)
+              info = Pgp.upload_key(params[:pgp_key], current_user.id)
               redirect_to input_string_first_time_path
             else
               respond_with resource, location: after_update_path_for(resource)

@@ -28,7 +28,7 @@ class ConversationsController < ApplicationController
 
   def new
     @recipient = User.find(params[:user_id])
-    @file = File.exists? ("public/pgp/users/#{@recipient.id}/key.txt")
+    @file = File.exist? ("public/pgp/users/#{@recipient.id}/key.txt")
   end
 
   def inbox

@@ -19,6 +19,7 @@
  *= require pgp
  *= require purchases
  *= require chosen
+ *= require active_admin
  *= require_self
  */
 

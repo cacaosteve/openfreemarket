@@ -97,37 +97,46 @@ class OrdersController < InheritedResources::Base
     current_user.last_active = Time.now
     current_user.save
 
-    if @blockchain_payment_method.status
-      @bitcoin_balance = @wallet.get_balance() rescue nil
-      if @bitcoin_balance.present?
-        @bitcoin_address = @wallet.list_addresses().first.address
-      else
-        msg = "you need enable the api key in your wallet" 
-      end
-    elsif @bitcoind_payment_method.status
-      if @bitcoin_balance.present?
-        balance_minus_fee
-        @bitcoin_address = current_user.addresses.where(is_active: true).first.gsub(/\n/, '') rescue ""
-        
-        if @bitcoin_address.nil? 
-          user_address = `bitcoin-cli getaccountaddress #{current_user.username}`.gsub(/\n/, '') rescue ""
-          @bitcoin_address = Address.create({ address: user_address, user_id: current_user.id, is_active: true })
+    begin
+      if @blockchain_payment_method.status
+        @bitcoin_balance = @wallet.get_balance() rescue nil
+        if @bitcoin_balance.present?
+          @bitcoin_address = @wallet.list_addresses().first.address
+        else
+          msg = "You need to enable the API key in your wallet." 
         end
-      else
-        msg = "bitcoincash not configured properly on server. bitcoincash functions currently unavailable." 
+      elsif @bitcoind_payment_method.status
+        if @bitcoin_balance.present?
+          balance_minus_fee
+          @bitcoin_address = current_user.addresses.where(is_active: true).first.gsub(/\n/, '') rescue nil
+          if @bitcoin_address.nil? 
+            user_address = `bitcoin-cli getaccountaddress #{current_user.username}`.gsub(/\n/, '') rescue nil
+            @bitcoin_address = Address.create({ address: user_address, user_id: current_user.id, is_active: true })
+          end
+        else
+          msg = "Bitcoin Cash is not configured properly on the server. Bitcoin Cash functions are currently unavailable." 
+        end
       end
-    end
-    
-    if @bitcoin_balance.present?
-      @qr = RQRCode::QRCode.new( "#{@bitcoin_address.address.gsub(/\n/, '') rescue ""}", :size => 7, :level => :h )
-      @member_price = MemberPrice.first.price rescue 10
-      group_local = @rates.select { |element_hash| element_hash["code"].eql?"#{current_user.currency}" }
-      @local_currency = @bitcoin_balance.to_f * group_local.first['rate'].to_f rescue 0
-    else
-      if current_user.role.eql?"Vendor"
-        redirect_to dashboard_vendor_path, notice: msg
-      elsif current_user.role.eql?"Buyer"
-        redirect_to dashboard_path, notice: msg
+
+      if @bitcoin_balance.present?
+        @qr = RQRCode::QRCode.new("#{@bitcoin_address.address.gsub(/\n/, '') rescue ''}", size: 7, level: :h)
+        @member_price = MemberPrice.first.price rescue 10
+        group_local = @rates.select { |element_hash| element_hash['code'].eql? "#{current_user.currency}" }
+        @local_currency = @bitcoin_balance.to_f * group_local.first['rate'].to_f rescue 0
+      else
+        if current_user.role.eql?("Vendor")
+          redirect_to dashboard_vendor_path, notice: msg
+        elsif current_user.role.eql?("Buyer")
+          redirect_to dashboard_path, notice: msg
+        end
+      end
+    rescue => e
+      # Handle any unexpected errors gracefully
+      Rails.logger.error("Error in account action: #{e.message}")
+      if current_user.role.eql?("Vendor")
+        redirect_to dashboard_vendor_path, alert: "An unexpected error occurred. Please contact support."
+      elsif current_user.role.eql?("Buyer")
+        redirect_to dashboard_path, alert: "An unexpected error occurred. Please contact support."
       end
     end
   end

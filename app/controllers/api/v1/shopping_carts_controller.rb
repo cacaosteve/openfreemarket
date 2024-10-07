@@ -97,8 +97,8 @@ class Api::V1::ShoppingCartsController < ApiController
   def message_information
     current_user = User.where(authentication_token: params[:auth_token]).first
     # item = Item.find(params[:item_id])
-    # file_buyer = File.exists? ("public/pgp/users/#{current_user.id}/key.txt")
-    # file_vendor = File.exists? ("public/pgp/users/#{item.user.id}/key.txt")
+    # file_buyer = File.exist? ("public/pgp/users/#{current_user.id}/key.txt")
+    # file_vendor = File.exist? ("public/pgp/users/#{item.user.id}/key.txt")
     
     # if file_buyer.present?
     #   email = nil

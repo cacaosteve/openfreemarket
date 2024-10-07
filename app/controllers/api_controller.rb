@@ -1,3 +1,6 @@
+require 'open-uri'
+require 'json'
+
 class ApiController < ApplicationController
   before_action :authenticate_user_from_token!
   before_action :category
@@ -19,18 +22,32 @@ class ApiController < ApplicationController
       headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
       headers['Access-Control-Allow-Headers'] = 'X-Requested-With, X-Prototype-Version, Token'
       headers['Access-Control-Max-Age'] = '1728000'
- 
-      render :text => '', :content_type => 'text/plain'
+
+      render plain: '', content_type: 'text/plain'
     end
   end
- 
+
   def get_BCH_rates
-    currencies = JSON.load(open("https://bitpay.com/api/rates"))
-    active_currencies = CurrencyConfig.where(status: true).map(&:name)
-    rates = currencies.select{ |hash| active_currencies.include? hash['code'] }
-    @rates = rates.each_slice(6).to_a.flatten
+    begin
+      # Fetch the rates from the BitPay API
+      response = URI.open("https://bitpay.com/api/rates")
+      currencies = JSON.parse(response.read)
+
+      # Get active currencies from the database
+      active_currencies = CurrencyConfig.where(status: true).map(&:name)
+
+      # Filter the rates based on active currencies
+      rates = currencies.select { |hash| active_currencies.include?(hash['code']) }
+
+      # Store the filtered rates, flattening if needed
+      @rates = rates.each_slice(6).to_a.flatten
+    rescue OpenURI::HTTPError, JSON::ParserError => e
+      Rails.logger.error "Failed to fetch or parse BCH rates: #{e.message}"
+      # Provide fallback rates or handle the error appropriately
+      @rates = []
+    end
   end
-  
+
   def market_name
     @market_name = MarketName.first
     if user_signed_in?

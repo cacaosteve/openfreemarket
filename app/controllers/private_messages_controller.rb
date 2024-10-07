@@ -39,7 +39,7 @@ class PrivateMessagesController < InheritedResources::Base
     conversation_user = ConversationsUser.where("sender_id = ? AND receiver_id = ?", @user.id, current_user.id ).first
     conversation_user_1 = ConversationsUser.where("sender_id = ? AND receiver_id = ?", current_user.id, @user.id ).first
     if conversation_user.present?
-      conversation_user.update_attributes(is_read: true)
+      conversation_user.update(is_read: true)
       @private_message = PrivateMessage.new
       @recipient_id = @user.id
       @messages = conversation_user.conversation.private_messages.where(is_deleted: false).order("created_at DESC")
@@ -103,7 +103,7 @@ class PrivateMessagesController < InheritedResources::Base
 
   def new
     @recieved = User.find(params[:receiver_id])
-    @file = File.exists? ("public/pgp/users/#{@recieved.id}/key.txt")
+    @file = File.exist? ("public/pgp/users/#{@recieved.id}/key.txt")
     @private_message = PrivateMessage.new
   end
 

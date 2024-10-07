@@ -145,8 +145,8 @@ class ShoppingCartsController < ApplicationController
     elsif params[:message].present?
       shopping_cart = ShoppingCart.find(params[:shopping_cart_id])
       item = Item.find(params[:item_id])
-      file_buyer = File.exists? ("public/pgp/users/#{current_user.id}/key.txt")
-      file_vendor = File.exists? ("public/pgp/users/#{item.user.id}/key.txt")
+      file_buyer = File.exist? ("public/pgp/users/#{current_user.id}/key.txt")
+      file_vendor = File.exist? ("public/pgp/users/#{item.user.id}/key.txt")
       if file_buyer.present? || file_vendor.present?
         FileUtils.mkdir_p "public/message/cart/#{shopping_cart.id}"
         pgp_key = File.open("public/message/cart/#{shopping_cart.id}/message.txt", 'w') {|f| f.write("#{params[:message]}") }

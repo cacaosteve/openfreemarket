@@ -1,4 +1,4 @@
-class PGP
+class Pgp
   def self.upload_key(key, user_id)
     # temp = key.gsub("-----BEGIN PGP PUBLIC KEY BLOCK-----\r\n", "")
     # key  = temp.gsub("=\r\n-----END PGP PUBLIC KEY BLOCK-----", "")

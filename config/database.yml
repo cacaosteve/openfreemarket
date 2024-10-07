@@ -1,14 +1,16 @@
-development:
+production:
   adapter: postgresql
-  encoding: unicode
   database: openfreemarket
+  encoding: utf8
   pool: 5
   username: postgres
   password: password
 production:
+  
+development:
   adapter: postgresql
-  encoding: unicode
   database: openfreemarket
+  encoding: utf8
   pool: 5
   username: postgres
   password: password

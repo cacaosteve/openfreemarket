@@ -68,7 +68,7 @@ class Api::V1::UsersController < ApiController
   def update
     user = User.find(params[:id])
     if params[:pgp_key].present?
-      info = PGP.upload_key(params[:pgp_key], user.id)
+      info = Pgp.upload_key(params[:pgp_key], user.id)
     end
     
     if user.withdraw_password.present?

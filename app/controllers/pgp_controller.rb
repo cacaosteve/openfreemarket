@@ -14,10 +14,10 @@ class PgpController < ApplicationController
     user = current_user
     new_password = SecureRandom.urlsafe_base64(10)
     session[:new_password] = new_password
-    file = File.exists? ("public/pgp/users/#{current_user.id}/key.txt")
+    file = File.exist? ("public/pgp/users/#{current_user.id}/key.txt")
     if file.eql? true
       email = nil
-      check_random_password_file = File.exists? ("public/pgp/users/#{user.id}/random_password.txt")
+      check_random_password_file = File.exist? ("public/pgp/users/#{user.id}/random_password.txt")
       if check_random_password_file.eql?false
         check_random_password_file = `touch "public/pgp/users/#{user.id}/random_password.txt"`
       else
@@ -59,7 +59,7 @@ class PgpController < ApplicationController
   def upload_key; end
 
   def check_pgp_key
-    info = PGP.upload_key(params[:key], current_user.id)
+    info = Pgp.upload_key(params[:key], current_user.id)
 
     if info.imports
       redirect_to input_string_first_time_path
@@ -122,10 +122,10 @@ class PgpController < ApplicationController
       user = User.find_by_username(params[:username])
     end
 
-    file = File.exists? ("public/pgp/users/#{user.id}/key.txt")
+    file = File.exist? ("public/pgp/users/#{user.id}/key.txt")
     if file.eql? true
       email = nil
-      check_random_string_file = File.exists? ("public/pgp/users/#{user.id}/random_string.txt")
+      check_random_string_file = File.exist? ("public/pgp/users/#{user.id}/random_string.txt")
       if check_random_string_file
         File.delete("public/pgp/users/#{user.id}/random_string.txt") 
         File.delete("public/pgp/users/#{user.id}/random_string.txt.asc") rescue nil
@@ -134,7 +134,7 @@ class PgpController < ApplicationController
       url = [Rails.public_path, "/pgp/users/#{user.id}/random_string.txt"].join
       user_random_string = user.string_indentifier
       system("echo #{user_random_string} > #{url}")
-      # random_password_encrypt = File.exists?("public/pgp/users/#{user.id}/random_string.txt.asc")
+      # random_password_encrypt = File.exist?("public/pgp/users/#{user.id}/random_string.txt.asc")
       # if random_password_encrypt.eql?false
         key = `gpg --import "public/pgp/users/#{user.id}/publickey.asc" 2>&1`
         gpg_id = key.present? ? key.split(":")[1].split().last : user.username
